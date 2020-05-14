@@ -10,7 +10,8 @@ pipelineJob('release-jetbrains-license-server') {
       scm {
         git {
           remote {
-              url('git@github.com:juanmacoo/jenkins-tests.git')
+              url('https://github.com/juanmacoo/jenkins-tests.git')
+              credentials('juanmacoo-github')
               branch('$GIT_COMMIT')
           }
         }
