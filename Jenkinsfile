@@ -14,7 +14,7 @@ pipeline {
           }
           not {
             expression {
-              return sh(returnStdout: true, script: "test \$(git branch --all --contains $GIT_COMMIT | grep master)")
+              return sh(returnStdout: true, script: "test \$(git branch --all --contains $GIT_COMMIT | grep master)").trim()
             }
           }
         }
@@ -30,7 +30,7 @@ pipeline {
         anyOf {
           environment name: 'GIT_COMMIT', value: 'master'
           expression {
-            return sh(returnStdout: true, script: "test \$(git branch --all --contains $GIT_COMMIT | grep master)")
+            return sh(returnStdout: true, script: "test \$(git branch --all --contains $GIT_COMMIT | grep master)").trim()
           }
         }
       }
