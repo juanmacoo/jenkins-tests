@@ -1,4 +1,4 @@
-pipelineJob('release-jetbrains-license-server') {
+pipelineJob('test_pipeline_when') {
 
   parameters {
     stringParam("GIT_COMMIT", "master", "Git hash to build.")
