@@ -20,7 +20,7 @@ pipeline {
         }
       }
       steps {
-        sh 'echo Staging'
+        sh 'echo Test Staging'
       }
     }
 
