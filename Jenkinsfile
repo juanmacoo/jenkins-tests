@@ -9,13 +9,8 @@ pipeline {
       when {
         anyOf {
           environment name: 'DEPLOY_MASTER_ON_STAGING', value: 'true'
-          not {
-            environment name: 'GIT_COMMIT', value: 'master'
-          }
-          not {
-            expression {
-              return sh(returnStdout: true, script: "test \$(git branch --all --contains $GIT_COMMIT | grep master)").trim()
-            }
+          expression {
+            return sh(returnStdout: true, script: "git branch --all --contains $GIT_COMMIT | grep master").trim().isEmpty()
           }
         }
       }
@@ -27,10 +22,9 @@ pipeline {
     stage('Deploy production') {
       when {
         not { environment name: 'DEPLOY_MASTER_ON_STAGING', value: 'true' }
-        anyOf {
-          environment name: 'GIT_COMMIT', value: 'master'
+        not {
           expression {
-            return sh(returnStdout: true, script: "test \$(git branch --all --contains $GIT_COMMIT | grep master)").trim()
+            return sh(returnStdout: true, script: "git branch --all --contains $GIT_COMMIT | grep master").trim().isEmpty()
           }
         }
       }
