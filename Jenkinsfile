@@ -9,8 +9,10 @@ pipeline {
       when {
         anyOf {
           environment name: 'DEPLOY_MASTER_ON_STAGING', value: 'true'
-          expression {
-            return sh(returnStdout: true, script: "git branch --all --contains $GIT_COMMIT | grep master").trim().isEmpty()
+          not {
+            expression {
+              return sh(returnStdout: true, script: "git rev-parse origin/master").trim() == GIT_COMMIT
+            }
           }
         }
       }
@@ -22,10 +24,8 @@ pipeline {
     stage('Deploy production') {
       when {
         not { environment name: 'DEPLOY_MASTER_ON_STAGING', value: 'true' }
-        not {
-          expression {
-            return sh(returnStdout: true, script: "git branch --all --contains $GIT_COMMIT | grep master").trim().isEmpty()
-          }
+        expression {
+          return sh(returnStdout: true, script: "git rev-parse origin/master").trim() == GIT_COMMIT
         }
       }
       steps {
