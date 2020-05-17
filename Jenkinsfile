@@ -5,6 +5,15 @@ pipeline {
   }
 
   stages{
+    stage('Test') {
+      steps {
+        script {
+          value = sh(returnStdout: true, script: "git rev-parse origin/master").trim()
+          print value == GIT_COMMIT
+        }
+      }
+    }
+
     stage('Deploy staging') {
       when {
         anyOf {
